@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Chat</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>ChatWS v1.0.0</h1>
+        <ul id="messages">
+            <!-- Messages -->
+        </ul>
+            <form id="message-form">
+            <input type="text" id="input-message" placeholder="Write a message...">
+            <button type="submit" id="send-button">Send</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+</body>
+</html>

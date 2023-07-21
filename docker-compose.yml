@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+    backend:
+        container_name: backend
+        hostname: backend
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - ${BACKEND_PORT}:${BACKEND_PORT}
+        networks:
+            - wschat_network
+        environment:
+            BACKEND_PORT: "${BACKEND_PORT}"
+        env_file:
+            - ./.env
+
+    frontend:
+        container_name: frontend
+        hostname: frontend
+        image: httpd:2.4.57
+        restart: always
+        depends_on:
+            - backend
+        volumes:
+            - ./frontend:/usr/local/apache2/htdocs
+        ports:
+            - 8000:80
+        networks:
+            - wschat_network
+
+networks:
+    wschat_network:
+        name: wschat_network
+        driver: bridge
