@@ -1,4 +1,4 @@
-const wsserver = "https://ws.example-domain.local" //PUT YOUR SERVER
+const wsserver = "http://ws.example-domain.local" //PUT YOUR SERVER
 const socket = io(wsserver);
 
 const messages = document.getElementById('messages');
