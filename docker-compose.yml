@@ -1,6 +1,19 @@
-version: "3"
+version: "3.7"
 
 services:
+    revproxy:
+        container_name: revproxy
+        hostname: revproxy
+        image: nginx:stable-alpine-slim
+        restart: always
+        volumes:
+            - ./revproxy:/etc/nginx/conf.d
+        ports:
+            - 80:80
+            - 443:443
+        networks:
+            - wschat-network
+
     backend:
         container_name: backend
         hostname: backend
@@ -8,30 +21,32 @@ services:
             context: ./backend
             dockerfile: Dockerfile
         restart: always
-        ports:
-            - ${BACKEND_PORT}:${BACKEND_PORT}
-        networks:
-            - wschat_network
         environment:
             BACKEND_PORT: "${BACKEND_PORT}"
         env_file:
             - ./.env
+        expose:
+            - ${BACKEND_PORT}
+        networks:
+            - wschat-network
 
     frontend:
         container_name: frontend
         hostname: frontend
-        image: httpd:2.4.57
+        image: httpd:2.4.57-alpine3.18
         restart: always
         depends_on:
             - backend
         volumes:
             - ./frontend:/usr/local/apache2/htdocs
-        ports:
-            - 8000:80
+        env_file:
+            - ./.env
+        expose:
+            - ${FRONTEND_PORT}
         networks:
-            - wschat_network
+            - wschat-network
 
 networks:
-    wschat_network:
-        name: wschat_network
+    wschat-network:
+        name: wschat-network
         driver: bridge

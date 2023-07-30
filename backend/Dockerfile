@@ -1,10 +1,8 @@
-FROM node:20-slim
+FROM node:lts-slim
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY ./app ./
 RUN npm install
 
-COPY index.js .
-
-CMD [ "node", "index.js" ]
+CMD [ "node", "server.js" ]
