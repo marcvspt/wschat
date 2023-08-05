@@ -1,9 +1,9 @@
 const wsserver = 'http://ws.example-domain.local' //PUT YOUR SERVER-DOMAIN
 const socket = io(wsserver)
 
-const messages = document.getElementById('messages')
-const messageForm = document.getElementById('message-form')
-const inputMessage = document.getElementById('input-message')
+const messages = document.querySelector('#messages')
+const messageForm = document.querySelector('#message-form')
+const inputMessage = document.querySelector('#input-message')
 
 messageForm.addEventListener('submit', (event) => {
     event.preventDefault()

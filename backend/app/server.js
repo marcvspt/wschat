@@ -1,26 +1,47 @@
-const express = require('express')
-const http = require('http')
-const socketIO = require('socket.io')
+const http = require('http');
+const socketIO = require('socket.io');
 
-const app = express()
-const server = http.createServer(app)
-const io = socketIO(server)
+const PORT = process.env.BACKEND_PORT || 3000;
 
-const port = process.env.BACKEND_PORT || 3000
+const corsOptions = {
+    origin: (origin, callback) => {
+        // PUT YOUR DOMAINS OR HOST TO ALLOW THE CORS
+        const ACCEPTED_ORIGINS = [
+            'http://localhost',
+            'http://example-domain.local'
+        ];
 
-io.on('connection', (socket) => {
-    console.log('New client connected')
+        if (ACCEPTED_ORIGINS.includes(origin)) {
+            return callback(null, true);
+        }
+
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        return callback(new Error('Not allowed by CORS'));
+    },
+    methods: ['OPTIONS', 'HEAD', 'GET', 'POST', 'PATCH', 'DELETE', 'PUT']
+}
+
+const server = http.createServer();
+const ws = socketIO(server, {
+    cors: corsOptions
+});
+
+ws.on('connection', (socket) => {
+    console.log('New client connected');
 
     socket.on('message', (data) => {
-        console.log('Message received:', data)
-        io.emit('message', data)
-    })
+        console.log('Message received:', data);
+        ws.emit('message', data);
+    });
 
     socket.on('disconnect', () => {
-        console.log('Client disconnected')
-    })
-})
+        console.log('Client disconnected');
+    });
+});
 
-server.listen(port, () => {
-    console.log(`Server running on http://0.0.0.0:${port}`)
-})
+server.listen(PORT, () => {
+    console.log(`Server running on http://0.0.0.0:${PORT}`);
+});
